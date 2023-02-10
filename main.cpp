@@ -108,7 +108,31 @@ void subBytes() {
 }
 
 void shiftRows() {
+    //row 0: no shift
+    //row 1: shift 1
+    string temp = message[1][0];
+    for(int i = 0; i < 3; i++){
+        message[1][i] = message[1][i + 1];
+    }
+    message[1][3] = temp;
 
+    //row 2: shift 2
+    string temp1 = message[2][0];
+    string temp2 = message[2][1];
+    for(int i = 0; i < 2; i++){
+        message[2][i] = message[2][i + 2];
+    }
+    message[2][2] = temp1;
+    message[2][3] = temp2;
+
+    //row 3: shift 3
+    temp1 = message[3][0];
+    temp2 = message[3][1];
+    string temp3 = message[3][2];
+    message[3][0] = message[3][3];
+    message[3][1] = message[3][0];
+    message[3][2] = message[3][1];
+    message[3][3] = message[3][2];
 }
 
 void mixColumns() {

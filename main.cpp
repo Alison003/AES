@@ -35,7 +35,6 @@ string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67",
 
 void getInput();
 void getMessage();
-void keyExpansion();
 void Decrypt();
 void Encrypt();
 void subBytes();
@@ -90,12 +89,7 @@ void getMessage() {
             index++;
         }
     }
-    keyExpansion();
     Encrypt();
-}
-
-void keyExpansion() {
-//TODO: expand key
 }
 
 void roundKey(){

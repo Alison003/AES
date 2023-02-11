@@ -10,6 +10,12 @@ string key [4][4] = {{"6d","75","6c","74"},
                      {"69","70","72","6f"},
                      {"67","72","61","6d"},
                      {"6d","69","6e","67"}};
+
+int matrix [4][4] = {{2,3,1,1},
+                     {1,2,3,1},
+                     {1,1,2,3},
+                     {3,1,1,2}};
+
 string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67","2b","fe","d7","ab","76"},
                         {"ca","82","c9","7d","fa","59","47","f0","ad","d4","a2","af","9c","a4","72","c0"},
                         {"b7","fd","93","26","36","3f","f7","cc","34","a5","e5","f1","71","d8","31","15"},
@@ -30,6 +36,7 @@ string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67",
 void getInput();
 void getMessage();
 void keyExpansion();
+void Decrypt();
 void Encrypt();
 void subBytes();
 void shiftRows();
@@ -55,7 +62,16 @@ void menu(){
 
 //Gets message to be decrypted
 void getInput(){
+    cout << "What message would you like to decrypt? (Please enter a 16 character message)\n";
+    string userInput;
+    cin >> userInput;
 
+    //TODO: put encrypted message into 2D message array
+    Decrypt();
+}
+
+void Decrypt() {
+    //TODO: implement decrypting an encrypted message
 }
 
 //Gets message to be encrypted
@@ -79,7 +95,7 @@ void getMessage() {
 }
 
 void keyExpansion() {
-
+//TODO: expand key
 }
 
 void roundKey(){
@@ -98,10 +114,10 @@ void subBytes() {
         for(int j = 0; j < 4; j++){
             int x = message[j][i].at(0);
             stream << x;
-            stream >> std::hex >> first;
+            stream >> hex >> first;
             int y = message[j][i].at(1);
             stream << y;
-            stream >> std::hex >> second;
+            stream >> hex >> second;
             message[j][i] = sBox[first][second];
         }
     }
@@ -136,7 +152,24 @@ void shiftRows() {
 }
 
 void mixColumns() {
+    int value;
 
+    stringstream s;
+    int decimal;
+    string hex;
+
+    for(int column = 0; column < 4; column++){
+        for(int row = 0; row < 4; row++){
+            for (int i = 0; i < 4; i++){
+                s << message[i][column];
+                s >> hex >> decimal;
+                value += (decimal * matrix[row][i]);
+            }
+            s << hex << hex;
+            message[row][column] = hex;
+            value = 0;
+        }
+    }
 }
 
 void Encrypt(){

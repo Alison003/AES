@@ -234,6 +234,60 @@ void Encrypt(){
     roundKey();
 }
 
+string UnHex(string hex_c){
+    //go from hex to decimal
+    stringstream dec;
+    dec << hex_c
+
+    int dec_val;
+    stream >> hex >> dec_val;
+
+    //go from decimal to binary
+    int binary_inv[2];
+    int i = 0;
+    while (dec_val > 0){
+        binary_inv[i] = dec_val % 2;
+        dec_val = dec_val/2;
+        i++;
+    }
+
+    //invert the array
+    int binary[2];
+    for (int x = 0; x < 2; x++){
+        binary[x] = binary_inv[32-x];
+    }
+
+    string bin = "  ";
+    bin[0] = binary[0];
+    bin[1] = binary[1];
+    return bin;
+}
+
+// 01
+// 11
+// 10
+string* exclusiveOr(){
+    string result = "  ";
+    string arr[4][1];
+    string arr_1[4][1];
+    string result_arr[4][1];
+    for (int i = 0; i < 4; i ++){
+        string tmp_one = arr[i][1];
+        string tmp_two = arr_1[i][1];
+        for(int x = 0; x < 2; x++){
+            if(tmp_one[x] != tmp_two[x]){
+                result[x] = "1"
+            }
+            else{
+                result[x] = "0"
+            }
+        }
+        result_arr[i][1] = result;
+        result = "  ";
+    }
+    return result_arr;
+}
+
 int main() {
     menu();
     return 0;

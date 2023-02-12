@@ -184,10 +184,10 @@ void Encrypt(){
 string UnHex(string hex_c){
     //go from hex to decimal
     stringstream dec;
-    dec << hex_c
+    dec << hex_c;
 
     int dec_val;
-    stream >> hex >> dec_val;
+    dec >> hex >> dec_val;
 
     //go from decimal to binary
     int binary_inv[2];
@@ -213,7 +213,7 @@ string UnHex(string hex_c){
 // 01
 // 11
 // 10
-string* exclusiveOr(){
+void exclusiveOr(){
     string result = "  ";
     string arr[4][1];
     string arr_1[4][1];
@@ -223,16 +223,16 @@ string* exclusiveOr(){
         string tmp_two = arr_1[i][1];
         for(int x = 0; x < 2; x++){
             if(tmp_one[x] != tmp_two[x]){
-                result[x] = "1"
+                result[x] = '1';
             }
             else{
-                result[x] = "0"
+                result[x] = '0';
             }
         }
         result_arr[i][1] = result;
         result = "  ";
     }
-    return result_arr;
+//return result_arr;
 }
 
 int main() {

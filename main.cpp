@@ -213,7 +213,7 @@ string UnHex(string hex_c){
 // 01
 // 11
 // 10
-string[] exclusiveOr(){
+string* exclusiveOr(){
     string result = "  ";
     string arr[4][1];
     string arr_1[4][1];

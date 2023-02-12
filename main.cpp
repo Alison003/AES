@@ -38,6 +38,8 @@ string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67",
                         {"e1","f8","98","11","69","d9","8e","94","9b","1e","87","e9","ce","55","28","df"},
                         {"8c","a1","89","0d","bf","e6","42","68","41","99","2d","0f","b0","54","bb","16"}};
 
+string result_arr[4][1];
+
 void getInput();
 void getMessage();
 void Decrypt();
@@ -46,6 +48,7 @@ void subBytes();
 void shiftRows();
 void mixColumns();
 void roundKey();
+void exclusiveOr(string arr[4][1], string arr_1[4][1]);
 
 void menu(){
     cout << "Please enter the number for the action you would like to perform\n";
@@ -98,54 +101,59 @@ void getMessage() {
 }
 
 void roundKey(){
-    int index = 0;
+    string origKey [4][1];
+    string newKey [4][1];
+    string newBlock [4][4];
 
-    if (index == 0){
-        //get last column of original key
-        string origKey [4][1];
-        string newKey [4][4];
+    for (int i = 0; i < 4; i++){
+        if (i == 0){
+            //get last column of original key
 
-        for (int i = 0; i < 4; i++){
-            origKey[i][index] = key[i][index];
-            newKey[i][index] = key[i][4];
-        }
-
-        //shift up one
-        string temp;
-        temp = newKey[0][1];
-        for (int i = 0; i < 3; i++){
-            newKey[i][1] = newKey[i+1][1];
-        }
-        newKey[4][1] = temp;
-
-        //sub bytes
-        stringstream stream;
-        int first;
-        int second;
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 4; j++){
-                int x = newKey[j][i].at(0);
-                stream << x;
-                stream >> hex >> first;
-                int y = newKey[j][i].at(1);
-                stream << y;
-                stream >> hex >> second;
-                newKey[j][i] = sBox[first][second];
+            for (int j = 0; j < 4; j++){
+                origKey[j][i] = key[j][i];
+                newKey[j][i] = key[j][3];
             }
+
+            //shift up one
+            string temp;
+            temp = newKey[0][1];
+            for (int j = 0; j < 3; j++){
+                newKey[j][1] = newKey[j+1][1];
+            }
+            newKey[3][1] = temp;
+
+            //sub bytes
+            stringstream stream;
+            int first;
+            int second;
+            for(int h = 0; h < 4; h++){
+                for(int j = 0; j < 4; j++){
+                    int x = newKey[j][h].at(0);
+                    stream << x;
+                    stream >> hex >> first;
+                    int y = newKey[j][h].at(1);
+                    stream << y;
+                    stream >> hex >> second;
+                    newKey[j][h] = sBox[first][second];
+                }
+            }
+
+            //XOR with the index column of original key
+            exclusiveOr(origKey, newKey);
+
+            //XOR with the rcon table column
+            string rConRow [4][1];
+            for (int j = 0; j < 4; j++){
+                rConRow[j][1] = rCon[j][i];
+            }
+            exclusiveOr(rConRow, newKey);
+
+        }else{
+            //XOR previous column of new key with next column in original key
         }
-
-        //XOR with the index column of original key
-        //exclusiveOr(origKey, newKey);
-
-        //XOR with the rcon table column
-        string rConRow [4][1];
-        for (int i = 0; i < 4; i++){
-            rConRow[i][1] = rCon[i][index];
+        for (int j = 0; j < 4; j++){
+            newBlock[j][i] = newKey[j][1];
         }
-        //exclusiveOr(rConRow, newKey);
-
-    }else{
-        //XOR previous column of new key with next column in original key
     }
 }
 
@@ -266,11 +274,8 @@ string UnHex(string hex_c){
 // 01
 // 11
 // 10
-void exclusiveOr(){
+void exclusiveOr(string arr[4][1], string arr_1[4][1]){
     string result = "  ";
-    string arr[4][1];
-    string arr_1[4][1];
-    string result_arr[4][1];
     for (int i = 0; i < 4; i ++){
         string tmp_one = arr[i][0];
         string tmp_two = arr_1[i][0];

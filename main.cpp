@@ -278,9 +278,6 @@ string UnHex(string hex_c){
 // 10
 void exclusiveOr(string arr[4][1], string arr_1[4][1]){
     string result = "  ";
-    string arr[4][1];
-    string arr_1[4][1];
-    string result_arr[4][1];
     for (int i = 0; i < 4; i ++){
         string tmp_one = arr[i][0];
         string tmp_two = arr_1[i][0];

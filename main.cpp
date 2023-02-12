@@ -266,8 +266,10 @@ string UnHex(string hex_c){
     }
 
     string bin = "  ";
-    bin[0] = binary[0];
-    bin[1] = binary[1];
+    int a = binary[0];
+    int b = binary[1];
+    bin[0] = char(a);
+    bin[1] = char(b);
     return bin;
 }
 

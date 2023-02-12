@@ -150,6 +150,16 @@ void roundKey(){
 
         }else{
             //XOR previous column of new key with next column in original key
+            string nextKey [4][1];
+            for (int j = 0; j < 4; j++){
+                nextKey[j][1] = newKey[j][1];
+            }
+
+            for (int j = 0; j < 4; j++){
+                origKey[j][i] = key[j][i];
+            }
+
+            exclusiveOr(origKey, nextKey);
         }
         for (int j = 0; j < 4; j++){
             newBlock[j][i] = newKey[j][1];

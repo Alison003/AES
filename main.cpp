@@ -16,6 +16,11 @@ int matrix [4][4] = {{2,3,1,1},
                      {1,1,2,3},
                      {3,1,1,2}};
 
+int rCon [4][10] = {{1,2,4,8,10,20,40,80,27,36},
+                   {0,0,0,0,0,0,0,0,0,0},
+                   {0,0,0,0,0,0,0,0,0,0},
+                   {0,0,0,0,0,0,0,0,0,0},};
+
 string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67","2b","fe","d7","ab","76"},
                         {"ca","82","c9","7d","fa","59","47","f0","ad","d4","a2","af","9c","a4","72","c0"},
                         {"b7","fd","93","26","36","3f","f7","cc","34","a5","e5","f1","71","d8","31","15"},
@@ -93,10 +98,54 @@ void getMessage() {
 }
 
 void roundKey(){
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++){
-            message[j][i] = message[j][i] + key[j][i];
+    int index = 0;
+
+    if (index == 0){
+        //get last column of original key
+        string origKey [4][1];
+        string newKey [4][4];
+
+        for (int i = 0; i < 4; i++){
+            origKey[i][index] = key[i][index];
+            newKey[i][index] = key[i][4];
         }
+
+        //shift up one
+        string temp;
+        temp = newKey[0][1];
+        for (int i = 0; i < 3; i++){
+            newKey[i][1] = newKey[i+1][1];
+        }
+        newKey[4][1] = temp;
+
+        //sub bytes
+        stringstream stream;
+        int first;
+        int second;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                int x = newKey[j][i].at(0);
+                stream << x;
+                stream >> hex >> first;
+                int y = newKey[j][i].at(1);
+                stream << y;
+                stream >> hex >> second;
+                newKey[j][i] = sBox[first][second];
+            }
+        }
+
+        //XOR with the index column of original key
+        //exclusiveOr(origKey, newKey);
+
+        //XOR with the rcon table column
+        string rConRow [4][1];
+        for (int i = 0; i < 4; i++){
+            rConRow[i][1] = rCon[i][index];
+        }
+        //exclusiveOr(rConRow, newKey);
+
+    }else{
+        //XOR previous column of new key with next column in original key
     }
 }
 
@@ -167,7 +216,11 @@ void mixColumns() {
 }
 
 void Encrypt(){
-    roundKey();
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            message[j][i] = message[j][i] + key[j][i];
+        }
+    }
 
     for (int i = 0; i < 9; i++){
         subBytes();

@@ -6,10 +6,10 @@ using namespace std;
 //message to be encrypted/decrypted
 string message [4][4];
 //key is: multiprogramming
-string key [4][4] = {{"6d","75","6c","74"},
-                     {"69","70","72","6f"},
-                     {"67","72","61","6d"},
-                     {"6d","69","6e","67"}};
+string key [4][4] = {{"6d","69","67","6d"},
+                     {"75","70","72","69"},
+                     {"6c","72","61","6e"},
+                     {"74","6f","6d","67"}};
 
 int matrix [4][4] = {{2,3,1,1},
                      {1,2,3,1},

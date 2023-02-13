@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -69,9 +70,10 @@ void menu(){
 
 //Gets message to be decrypted
 void getInput(){
-    cout << "What message would you like to decrypt? (Please enter a 16 character message)\n";
-    string userInput;
-    cin >> userInput;
+    //cout << "What message would you like to decrypt? (Please enter a 16 character message)\n";
+    //string userInput;
+    //cin >> userInput;
+    cout << "Looking for file input.txt to decrypt it... Please make sure it has a set of 16 chars\n";
 
     //TODO: put encrypted message into 2D message array
     Decrypt();
@@ -83,6 +85,7 @@ void Decrypt() {
 
 //Gets message to be encrypted
 void getMessage() {
+    /**
     cout << "What message would you like to encrypt? (Please enter a 16 character message)\n";
     string userInput;
     cin >> userInput;
@@ -95,6 +98,35 @@ void getMessage() {
             ss << hex << int(userInput.at(index));
             message[j][i] = ss.str();;
             index++;
+        }
+    }
+     */
+
+    cout << "Looking for file input.txt to encrypt it... Please make sure it has a set of 16 chars\n";
+
+    fstream f;
+    string tmp;
+    stringstream ss;
+    int i = 0;
+    int x = 0;
+    f.open("input.txt",ios::in);
+    if (f.is_open()){
+        while(getline(f, tmp) && i < 4){
+            for(char c : tmp){
+                if(c == ' '){
+                    continue;
+                }
+                else {
+                    ss << hex << int(c);
+                    message[x][i] = ss.str();
+                    ss.flush();
+                    x++;
+                }
+
+                if(x%3 == 0){
+                    i++;
+                }
+            }
         }
     }
     Encrypt();

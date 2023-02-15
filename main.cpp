@@ -44,6 +44,10 @@ string result_arr[4][1];
 void getInput();
 void getMessage();
 void Decrypt();
+void invRoundKey();
+void invSubBytes();
+void invShiftRows();
+void invMixColumns();
 void Encrypt();
 void subBytes();
 void shiftRows();
@@ -80,7 +84,45 @@ void getInput(){
 }
 
 void Decrypt() {
-    //TODO: implement decrypting an encrypted message
+    invRoundKey();
+    for (int i = 0; i < 9; i++){
+        invShiftRows();
+        invSubBytes();
+        invRoundKey();
+        invMixColumns();
+    }
+    invShiftRows();
+    invSubBytes();
+    invRoundKey();
+}
+
+void invShiftRows(){
+    //row 0: no shift
+    //row 1: shift 1
+    string temp = message[1][3];
+    for(int i = 3; i > 0; i--){
+        message[1][i-1] = message[1][i];
+    }
+    message[1][0] = temp;
+
+    //row 2: shift 2
+    string temp1 = message[2][3];
+    string temp2 = message[2][2];
+    for(int i = 2; i > 0; i--){
+        message[2][i - 1] = message[2][i];
+    }
+    message[2][0] = temp1;
+    message[2][1] = temp2;
+
+    //row 3: shift 3
+    temp1 = message[3][3];
+    temp2 = message[3][2];
+    string temp3 = message[3][1];
+
+    message[3][3] = message[3][0];
+    message[3][2] = temp1;
+    message[3][1] = temp2;
+    message[3][0] = temp3;
 }
 
 //Gets message to be encrypted
@@ -238,10 +280,11 @@ void shiftRows() {
     temp1 = message[3][0];
     temp2 = message[3][1];
     string temp3 = message[3][2];
+
     message[3][0] = message[3][3];
-    message[3][1] = message[3][0];
-    message[3][2] = message[3][1];
-    message[3][3] = message[3][2];
+    message[3][1] = temp1;
+    message[3][2] = temp2;
+    message[3][3] = temp3;
 }
 
 void mixColumns() {
@@ -282,6 +325,14 @@ void Encrypt(){
     subBytes();
     shiftRows();
     roundKey();
+
+    ofstream f;
+    f.open("encrypted.txt");
+    for (int row = 0; row < 4; row++){
+        for (int col = 0; col < 4; col++){
+            f << message[row][col];
+        }
+    }
 }
 
 string UnHex(string hex_c){

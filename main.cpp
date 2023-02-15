@@ -12,6 +12,8 @@ string key [4][4] = {{"6d","69","67","6d"},
                      {"6c","72","61","6e"},
                      {"74","6f","6d","67"}};
 
+string invKey [4][4];
+
 int matrix [4][4] = {{2,3,1,1},
                      {1,2,3,1},
                      {1,1,2,3},
@@ -26,6 +28,11 @@ int rCon [4][10] = {{1,2,4,8,10,20,40,80,27,36},
                    {0,0,0,0,0,0,0,0,0,0},
                    {0,0,0,0,0,0,0,0,0,0},
                    {0,0,0,0,0,0,0,0,0,0},};
+
+int invRCon [4][10] = {{36,27,80,40,20,10,8,4,2,1},
+                       {0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0},};
 
 string sBox [16][16] = {{"63","7c","77","7b","f2","6b","6f","c5","30","01","67","2b","fe","d7","ab","76"},
                         {"ca","82","c9","7d","fa","59","47","f0","ad","d4","a2","af","9c","a4","72","c0"},
@@ -215,7 +222,74 @@ void invMixColumns() {
 }
 
 void invRoundKey() {
-    //TODO: inv round key schedule
+    string origKey [4][1];
+    string newKey [4][1];
+    string newBlock [4][4];
+
+    for (int i = 0; i < 4; i++){
+        if (i == 0){
+            //get last column of original key
+            for (int j = 0; j < 4; j++){
+                origKey[j][i] = key[j][i];
+                newKey[j][i] = key[j][3];
+            }
+
+            //shift up one
+            string temp;
+            temp = newKey[0][1];
+            for (int j = 0; j < 3; j++){
+                newKey[j][1] = newKey[j+1][1];
+            }
+            newKey[3][1] = temp;
+
+            //sub bytes
+            stringstream stream;
+            int first;
+            int second;
+            for(int h = 0; h < 4; h++){
+                for(int j = 0; j < 4; j++){
+                    int x = newKey[j][h].at(0);
+                    stream << x;
+                    stream >> hex >> first;
+                    int y = newKey[j][h].at(1);
+                    stream << y;
+                    stream >> hex >> second;
+                    newKey[j][h] = invSBox[first][second];
+                }
+            }
+
+            //XOR with the index column of original key
+            exclusiveOr(origKey, newKey);
+
+            //XOR with the rcon table column
+            string rConRow [4][1];
+            for (int j = 0; j < 4; j++){
+                rConRow[j][1] = invRCon[j][i];
+            }
+            exclusiveOr(rConRow, newKey);
+
+        }else{
+            //XOR previous column of new key with next column in original key
+            string nextKey [4][1];
+            for (int j = 0; j < 4; j++){
+                nextKey[j][1] = newKey[j][1];
+            }
+
+            for (int j = 0; j < 4; j++){
+                origKey[j][i] = key[j][i];
+            }
+
+            exclusiveOr(origKey, nextKey);
+        }
+        for (int j = 0; j < 4; j++){
+            newBlock[j][i] = newKey[j][1];
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++){
+            key[i][j] = newBlock[i][j];
+        }
+    }
 }
 
 //Gets message to be encrypted
@@ -313,6 +387,11 @@ void roundKey(){
         }
         for (int j = 0; j < 4; j++){
             newBlock[j][i] = newKey[j][1];
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++){
+            key[i][j] = newBlock[i][j];
         }
     }
 }

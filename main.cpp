@@ -194,7 +194,24 @@ void invSubBytes() {
 }
 
 void invMixColumns() {
-    //TODO: inv matrix multiplication
+    int value;
+
+    stringstream s;
+    int decimal;
+    string hex;
+
+    for(int column = 0; column < 4; column++){
+        for(int row = 0; row < 4; row++){
+            for (int i = 0; i < 4; i++){
+                s << message[i][column];
+                s >> hex >> decimal;
+                value += (decimal * invMatrix[row][i]);
+            }
+            s << hex << hex;
+            message[row][column] = hex;
+            value = 0;
+        }
+    }
 }
 
 void invRoundKey() {

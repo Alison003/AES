@@ -12,7 +12,10 @@ string key [4][4] = {{"6d","69","67","6d"},
                      {"6c","72","61","6e"},
                      {"74","6f","6d","67"}};
 
-string invKey [4][4];
+string invKey [4][4] = {{"-6d","-69","-67","-6d"},
+                     {"-75","-70","-72","-69"},
+                     {"-6c","-72","-61","-6e"},
+                     {"-74","-6f","-6d","-67"}};
 
 int matrix [4][4] = {{2,3,1,1},
                      {1,2,3,1},
@@ -83,6 +86,8 @@ void shiftRows();
 void mixColumns();
 void roundKey();
 void exclusiveOr(string arr[4][1], string arr_1[4][1]);
+void keyAdd();
+void invkeyAdd();
 
 void menu(){
     cout << "Please enter the number for the action you would like to perform\n";
@@ -93,9 +98,9 @@ void menu(){
     cin >> option;
 
     if(option == 1){
-        getInput();
-    }else if(option == 2){
         getMessage();
+    }else if(option == 2){
+        getInput();
     }else{
         cout << "That was not an option.\n";
     }
@@ -106,44 +111,48 @@ void getInput(){
     cout << "Looking for file encrypted.txt to encrypt it... Please make sure it has a set of 16 chars\n";
 
     fstream f;
-    string tmp;
+    string temp;
     stringstream ss;
-    int i = 0;
-    int x = 0;
-    f.open("encrypted.txt",ios::in);
+    int cur = 0;
+    f.open("encrypted.txt");
     if (f.is_open()){
-        while(getline(f, tmp) && i < 4){
-            for(char c : tmp){
-                if(c == ' '){
-                    continue;
-                }
-                else {
-                    ss << hex << int(c);
-                    message[x][i] = ss.str();
-                    ss.flush();
-                    x++;
-                }
-
-                if(x%3 == 0){
-                    i++;
-                }
+        getline(f, temp);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                //decimal -> hex
+                int c = (int)temp[cur];
+                ss << hex << c;
+                string s = ss.str();
+                message[j][i] = ss.str();
+                ss.str("");
+                cur++;
             }
+        }
+    }
+
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            cout << message[i][j] << endl;
         }
     }
     Decrypt();
 }
 
 void Decrypt() {
-    invRoundKey();
+    //invRoundKey();
+    invkeyAdd();
     for (int i = 0; i < 9; i++){
         invShiftRows();
         invSubBytes();
-        invRoundKey();
-        invMixColumns();
+        //invRoundKey();
+        invkeyAdd();
+        //invMixColumns();
     }
     invShiftRows();
     invSubBytes();
-    invRoundKey();
+    //invRoundKey();
+    invkeyAdd();
+
 
     ofstream f;
     f.open("decrypted.txt");
@@ -152,6 +161,8 @@ void Decrypt() {
             f << message[row][col];
         }
     }
+
+    cout << "Decrypted message has been written to decrypted.txt" << endl;
 }
 
 void invShiftRows(){
@@ -189,10 +200,10 @@ void invSubBytes() {
     int second;
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            int x = message[j][i].at(0);
+            char x = message[j][i].at(0);
             stream << x;
             stream >> hex >> first;
-            int y = message[j][i].at(1);
+            char y = message[j][i].at(1);
             stream << y;
             stream >> hex >> second;
             message[j][i] = invSBox[first][second];
@@ -217,6 +228,14 @@ void invMixColumns() {
             s << hex << hex;
             message[row][column] = hex;
             value = 0;
+        }
+    }
+}
+
+void invkeyAdd() {
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            message[j][i] = message[j][i] + invKey[j][i];
         }
     }
 }
@@ -297,27 +316,21 @@ void getMessage() {
     cout << "Looking for file input.txt to encrypt it... Please make sure it has a set of 16 chars\n";
 
     fstream f;
-    string tmp;
+    string temp;
     stringstream ss;
-    int i = 0;
-    int x = 0;
-    f.open("input.txt",ios::in);
+    int cur = 0;
+    f.open("input.txt");
     if (f.is_open()){
-        while(getline(f, tmp) && i < 4){
-            for(char c : tmp){
-                if(c == ' '){
-                    continue;
-                }
-                else {
-                    ss << hex << int(c);
-                    message[x][i] = ss.str();
-                    ss.flush();
-                    x++;
-                }
-
-                if(x%3 == 0){
-                    i++;
-                }
+        getline(f, temp);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                //decimal -> hex
+                int c = (int)temp[cur];
+                ss << hex << c;
+                string s = ss.str();
+                message[j][i] = ss.str();
+                ss.str("");
+                cur++;
             }
         }
     }
@@ -340,24 +353,55 @@ void roundKey(){
 
             //shift up one
             string temp;
-            temp = newKey[0][1];
+            temp = newKey[0][0];
             for (int j = 0; j < 3; j++){
-                newKey[j][1] = newKey[j+1][1];
+                newKey[j][0] = newKey[j+1][0];
             }
-            newKey[3][1] = temp;
+            newKey[3][0] = temp;
 
             //sub bytes
-            stringstream stream;
             int first;
             int second;
             for(int h = 0; h < 4; h++){
                 for(int j = 0; j < 4; j++){
-                    int x = newKey[j][h].at(0);
-                    stream << x;
-                    stream >> hex >> first;
-                    int y = newKey[j][h].at(1);
-                    stream << y;
-                    stream >> hex >> second;
+                    char x = message[i][j].at(0);
+                    char y = message[i][j].at(1);
+                    if (isdigit(x)){
+                        first = int(x) - 48;
+                    }
+                    if (isdigit(y)){
+                        second = int(y) - 48 ;
+                    }
+                    if (x == 'a'){
+                        first = 10;
+                    }else if (y == 'a'){
+                        second = 10;
+                    }
+                    if (x == 'b'){
+                        first = 11;
+                    }else if (y == 'b'){
+                        second = 11;
+                    }
+                    if (x == 'c'){
+                        first = 12;
+                    }else if (y == 'c'){
+                        second = 12;
+                    }
+                    if (x == 'd'){
+                        first = 13;
+                    }else if (y == 'd'){
+                        second = 13;
+                    }
+                    if (x == 'e'){
+                        first = 14;
+                    }else if (y == 'e'){
+                        second = 14;
+                    }
+                    if (x == 'f'){
+                        first = 15;
+                    }else if (y == 'f'){
+                        second = 15;
+                    }
                     newKey[j][h] = sBox[first][second];
                 }
             }
@@ -397,18 +441,49 @@ void roundKey(){
 }
 
 void subBytes() {
-    stringstream stream;
     int first;
     int second;
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            int x = message[j][i].at(0);
-            stream << x;
-            stream >> hex >> first;
-            int y = message[j][i].at(1);
-            stream << y;
-            stream >> hex >> second;
-            message[j][i] = sBox[first][second];
+            char x = message[i][j].at(0);
+            char y = message[i][j].at(1);
+            if (isdigit(x)){
+                first = int(x) - 48;
+            }
+            if (isdigit(y)){
+                second = int(y) - 48 ;
+            }
+                if (x == 'a'){
+                    first = 10;
+                }else if (y == 'a'){
+                    second = 10;
+                }
+                if (x == 'b'){
+                    first = 11;
+                }else if (y == 'b'){
+                    second = 11;
+                }
+                if (x == 'c'){
+                    first = 12;
+                }else if (y == 'c'){
+                    second = 12;
+                }
+                if (x == 'd'){
+                    first = 13;
+                }else if (y == 'd'){
+                    second = 13;
+                }
+                if (x == 'e'){
+                    first = 14;
+                }else if (y == 'e'){
+                    second = 14;
+                }
+                if (x == 'f'){
+                    first = 15;
+                }else if (y == 'f'){
+                    second = 15;
+                }
+            message[i][j] = sBox[first][second];
         }
     }
 }
@@ -445,41 +520,63 @@ void shiftRows() {
 void mixColumns() {
     int value;
 
-    stringstream s;
-    int decimal;
-    string hex;
+    stringstream ss;
 
     for(int column = 0; column < 4; column++){
         for(int row = 0; row < 4; row++){
             for (int i = 0; i < 4; i++){
-                s << message[i][column];
-                s >> hex >> decimal;
-                value += (decimal * matrix[row][i]);
+                //hex -> decimal
+                int dec;
+                string s = message[i][column];
+                cout << "s: " << s << endl;
+                ss << hex << s;
+                ss >> dec;
+                cout << "d: " << dec << endl;
+                cout << "m: " << matrix[row][i] << endl;
+                value += (dec * matrix[row][i]);
+                cout << "v: " << value << endl;
+                ss.clear();
+                ss.str("");
             }
-            s << hex << hex;
-            message[row][column] = hex;
+
+            ss << hex << value;
+            message[row][column] = ss.str();
             value = 0;
+            ss.str("");
         }
+    }
+
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            cout << message[i][j];
+        }
+        cout << endl;
     }
 }
 
-void Encrypt(){
+void keyAdd(){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             message[j][i] = message[j][i] + key[j][i];
         }
     }
+}
+
+void Encrypt(){
+    keyAdd();
 
     for (int i = 0; i < 9; i++){
         subBytes();
         shiftRows();
-        mixColumns();
-        roundKey();
+        //mixColumns();
+        //roundKey();
+        keyAdd();
     }
 
     subBytes();
     shiftRows();
-    roundKey();
+    //roundKey();
+    keyAdd();
 
     ofstream f;
     f.open("encrypted.txt");
@@ -488,6 +585,7 @@ void Encrypt(){
             f << message[row][col];
         }
     }
+    cout << "Encrypted message was written to encrypted.txt" << endl;
 }
 
 string UnHex(string hex_c){

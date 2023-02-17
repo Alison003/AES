@@ -77,7 +77,7 @@ void SubE(){
     char c;
     for (char & i : message){
         num = (int)i;
-        num += 4;
+        num += subKey;
         c = (char)num;
         i = c;
     }
@@ -93,7 +93,7 @@ void SubD(){
     char c;
     for (char & i : message){
         num = (int)i;
-        num -= 4;
+        num -= subKey;
         c = (char)num;
         i = c;
     }

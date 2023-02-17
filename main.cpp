@@ -12,11 +12,6 @@ string key [4][4] = {{"6d","69","67","6d"},
                      {"6c","72","61","6e"},
                      {"74","6f","6d","67"}};
 
-string invKey [4][4] = {{"-6d","-69","-67","-6d"},
-                     {"-75","-70","-72","-69"},
-                     {"-6c","-72","-61","-6e"},
-                     {"-74","-6f","-6d","-67"}};
-
 int matrix [4][4] = {{2,3,1,1},
                      {1,2,3,1},
                      {1,1,2,3},
@@ -108,21 +103,24 @@ void menu(){
 
 //Gets message to be decrypted
 void getInput(){
-    cout << "Looking for file encrypted.txt to encrypt it... Please make sure it has a set of 16 chars\n";
+    cout << "Looking for file encrypted.txt to decrypt it... Please make sure it has a set of 16 chars\n";
 
     fstream f;
     string temp;
     stringstream ss;
+    string word;
     int cur = 0;
     f.open("encrypted.txt");
     if (f.is_open()){
         getline(f, temp);
+        istringstream s(temp);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
+                s >> word;
                 //decimal -> hex
-                int c = (int)temp[cur];
+                int c = stoi(word);
                 ss << hex << c;
-                string s = ss.str();
+                //string str = ss.str();
                 message[j][i] = ss.str();
                 ss.str("");
                 cur++;
@@ -130,22 +128,27 @@ void getInput(){
         }
     }
 
-    for(int i = 0; i < 4; i++){
+    /*for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            cout << message[i][j] << endl;
+            cout << message[i][j];
         }
-    }
+        cout << endl;
+    }*/
     Decrypt();
 }
 
 void Decrypt() {
     //invRoundKey();
     invkeyAdd();
+    cout << "1" << endl;
     for (int i = 0; i < 9; i++){
         invShiftRows();
+        cout << "shift" << endl;
         invSubBytes();
+        cout << "sub" << endl;
         //invRoundKey();
         invkeyAdd();
+        cout << "key" << endl;
         //invMixColumns();
     }
     invShiftRows();
@@ -200,13 +203,46 @@ void invSubBytes() {
     int second;
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            char x = message[j][i].at(0);
-            stream << x;
-            stream >> hex >> first;
-            char y = message[j][i].at(1);
-            stream << y;
-            stream >> hex >> second;
-            message[j][i] = invSBox[first][second];
+            cout << "message: " << message[i][j] << endl;
+            char x = message[i][j].at(0);
+            char y = message[i][j].at(1);
+            if (isdigit(x)){
+                first = int(x) - 48;
+            }
+            if (isdigit(y)){
+                second = int(y) - 48 ;
+            }
+            if (x == 'a'){
+                first = 10;
+            }else if (y == 'a'){
+                second = 10;
+            }
+            if (x == 'b'){
+                first = 11;
+            }else if (y == 'b'){
+                second = 11;
+            }
+            if (x == 'c'){
+                first = 12;
+            }else if (y == 'c'){
+                second = 12;
+            }
+            if (x == 'd'){
+                first = 13;
+            }else if (y == 'd'){
+                second = 13;
+            }
+            if (x == 'e'){
+                first = 14;
+            }else if (y == 'e'){
+                second = 14;
+            }
+            if (x == 'f'){
+                first = 15;
+            }else if (y == 'f'){
+                second = 15;
+            }
+            message[i][j] = invSBox[first][second];
         }
     }
 }
@@ -233,9 +269,94 @@ void invMixColumns() {
 }
 
 void invkeyAdd() {
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 4; j++){
-            message[j][i] = message[j][i] + invKey[j][i];
+    int first;
+    int second;
+    int third;
+    int fourth;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            char x = key[i][j].at(0);
+            char y = key[i][j].at(1);
+            char a = message[i][j].at(0);
+            char b = message[i][j].at(1);
+            if (isdigit(x)) {
+                first = int(x) - 48;
+            }
+            if (isdigit(y)) {
+                second = int(y) - 48;
+            }
+            if (x == 'a') {
+                first = 10;
+            } else if (y == 'a') {
+                second = 10;
+            }
+            if (x == 'b') {
+                first = 11;
+            } else if (y == 'b') {
+                second = 11;
+            }
+            if (x == 'c') {
+                first = 12;
+            } else if (y == 'c') {
+                second = 12;
+            }
+            if (x == 'd') {
+                first = 13;
+            } else if (y == 'd') {
+                second = 13;
+            }
+            if (x == 'e') {
+                first = 14;
+            } else if (y == 'e') {
+                second = 14;
+            }
+            if (x == 'f') {
+                first = 15;
+            } else if (y == 'f') {
+                second = 15;
+            }
+            if (isdigit(a)) {
+                third = int(a) - 48;
+            }
+            if (isdigit(b)) {
+                fourth = int(b) - 48;
+            }
+            if (a == 'a') {
+                third = 10;
+            } else if (b == 'a') {
+                fourth = 10;
+            }
+            if (a == 'b') {
+                third = 11;
+            } else if (b == 'b') {
+                fourth = 11;
+            }
+            if (a == 'c') {
+                third = 12;
+            } else if (b == 'c') {
+                fourth = 12;
+            }
+            if (a == 'd') {
+                third = 13;
+            } else if (b == 'd') {
+                fourth = 13;
+            }
+            if (a == 'e') {
+                third = 14;
+            } else if (b == 'e') {
+                fourth = 14;
+            }
+            if (a == 'f') {
+                third = 15;
+            } else if (b == 'f') {
+                fourth = 15;
+            }
+
+            int hexK = (first * 16) + (second);
+            int hexM = (third * 16) + (fourth);
+            //cout << "num: " << message[j][i] << endl;
+            //int num1 = stoi(message[j][i]);
+            message[j][i] = to_string(hexM - hexK);
         }
     }
 }
@@ -555,9 +676,51 @@ void mixColumns() {
 }
 
 void keyAdd(){
+    int first;
+    int second;
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
-            message[j][i] = message[j][i] + key[j][i];
+            char x = message[i][j].at(0);
+            char y = message[i][j].at(1);
+            if (isdigit(x)){
+                first = int(x) - 48;
+            }
+            if (isdigit(y)){
+                second = int(y) - 48 ;
+            }
+            if (x == 'a'){
+                first = 10;
+            }else if (y == 'a'){
+                second = 10;
+            }
+            if (x == 'b'){
+                first = 11;
+            }else if (y == 'b'){
+                second = 11;
+            }
+            if (x == 'c'){
+                first = 12;
+            }else if (y == 'c'){
+                second = 12;
+            }
+            if (x == 'd'){
+                first = 13;
+            }else if (y == 'd'){
+                second = 13;
+            }
+            if (x == 'e'){
+                first = 14;
+            }else if (y == 'e'){
+                second = 14;
+            }
+            if (x == 'f'){
+                first = 15;
+            }else if (y == 'f'){
+                second = 15;
+            }
+            int num = (first * 16) + (second);
+            int res = num + stoi(key[j][i]);
+            message[j][i] = to_string(res);
         }
     }
 }
@@ -582,7 +745,7 @@ void Encrypt(){
     f.open("encrypted.txt");
     for (int row = 0; row < 4; row++){
         for (int col = 0; col < 4; col++){
-            f << message[row][col];
+            f << message[row][col] << " ";
         }
     }
     cout << "Encrypted message was written to encrypted.txt" << endl;

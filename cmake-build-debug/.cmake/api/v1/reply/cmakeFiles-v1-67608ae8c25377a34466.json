@@ -164,8 +164,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/development/AES/cmake-build-debug",
-		"source" : "C:/development/AES"
+		"build" : "C:/development/Encryption/cmake-build-debug",
+		"source" : "C:/development/Encryption"
 	},
 	"version" : 
 	{

@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "AES.exe"
+			"path" : "Encryption.exe"
 		},
 		{
-			"path" : "AES.pdb"
+			"path" : "Encryption.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -59,7 +59,7 @@
 			]
 		}
 	],
-	"id" : "AES::@6890427a1f51a3e7e1df",
+	"id" : "Encryption::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -79,8 +79,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "AES",
-	"nameOnDisk" : "AES.exe",
+	"name" : "Encryption",
+	"nameOnDisk" : "Encryption.exe",
 	"paths" : 
 	{
 		"build" : ".",
@@ -101,7 +101,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "main2.cpp",
+			"path" : "main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

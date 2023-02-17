@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/development/AES/cmake-build-debug"
+			"value" : "C:/development/Encryption/cmake-build-debug"
 		},
 		{
 			"name" : "AES_IS_TOP_LEVEL",
@@ -35,7 +35,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/development/AES"
+			"value" : "C:/development/Encryption"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/development/AES/cmake-build-debug"
+			"value" : "c:/development/Encryption/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -743,7 +743,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/development/AES"
+			"value" : "C:/development/Encryption"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -975,7 +975,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "AES"
+			"value" : "Encryption"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1352,6 +1352,42 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
+		},
+		{
+			"name" : "Encryption_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/development/Encryption/cmake-build-debug"
+		},
+		{
+			"name" : "Encryption_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "Encryption_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/development/Encryption"
 		}
 	],
 	"kind" : "cache",

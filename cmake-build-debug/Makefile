@@ -56,10 +56,10 @@ RM = "C:\Program Files\JetBrains\CLion 2021.3.3\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\development\AES
+CMAKE_SOURCE_DIR = C:\development\Encryption
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\development\AES\cmake-build-debug
+CMAKE_BINARY_DIR = C:\development\Encryption\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\development\AES\cmake-build-debug\CMakeFiles C:\development\AES\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\development\Encryption\cmake-build-debug\CMakeFiles C:\development\Encryption\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\development\AES\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\development\Encryption\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -116,41 +116,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named AES
+# Target rules for targets named Encryption
 
 # Build rule for target.
-AES: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 AES
-.PHONY : AES
+Encryption: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Encryption
+.PHONY : Encryption
 
 # fast build rule for target.
-AES/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\AES.dir\build.make CMakeFiles/AES.dir/build
-.PHONY : AES/fast
+Encryption/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Encryption.dir\build.make CMakeFiles/Encryption.dir/build
+.PHONY : Encryption/fast
 
-main2.obj: main2.cpp.obj
-.PHONY : main2.obj
+main.obj: main.cpp.obj
+.PHONY : main.obj
 
 # target to build an object file
-main2.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\AES.dir\build.make CMakeFiles/AES.dir/main2.cpp.obj
-.PHONY : main2.cpp.obj
+main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Encryption.dir\build.make CMakeFiles/Encryption.dir/main.cpp.obj
+.PHONY : main.cpp.obj
 
-main2.i: main2.cpp.i
-.PHONY : main2.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-main2.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\AES.dir\build.make CMakeFiles/AES.dir/main2.cpp.i
-.PHONY : main2.cpp.i
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Encryption.dir\build.make CMakeFiles/Encryption.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-main2.s: main2.cpp.s
-.PHONY : main2.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-main2.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\AES.dir\build.make CMakeFiles/AES.dir/main2.cpp.s
-.PHONY : main2.cpp.s
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Encryption.dir\build.make CMakeFiles/Encryption.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -160,10 +160,10 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... AES
-	@echo ... main2.obj
-	@echo ... main2.i
-	@echo ... main2.s
+	@echo ... Encryption
+	@echo ... main.obj
+	@echo ... main.i
+	@echo ... main.s
 .PHONY : help
 
 

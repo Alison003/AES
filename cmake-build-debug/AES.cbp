@@ -85,6 +85,9 @@
 		<Unit filename="C:/development/AES/main.cpp">
 			<Option target="AES"/>
 		</Unit>
+		<Unit filename="C:/development/AES/main2.cpp">
+			<Option target="AES"/>
+		</Unit>
 		<Unit filename="C:/development/AES/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -3,4 +3,4 @@ project(AES)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(AES main.cpp)
+add_executable(AES main.cpp main2.cpp)

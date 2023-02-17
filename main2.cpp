@@ -13,8 +13,8 @@ string key = "peter what goes down";
 
 void SubE();
 void SubD();
-void XORE(const string& arr, const string& arr_1);
-void XORD();
+string XORE(const string& m, const string& k);
+string XORD(const string& m, const string& k);
 string to_binary(const string& s);
 
 void menu(){
@@ -23,6 +23,7 @@ void menu(){
     cout << "2. XOR\n";
 
     int option;
+    string ret;
     cin >> option;
 
     //Read from file
@@ -61,9 +62,9 @@ void menu(){
         cout << "2. Decryption\n";
         cin >> option;
         if (option == 1){
-            XORE(message, key);
+            ret = XORE(message, key);
         }else if (option == 2){
-            XORD();
+            ret = XORD(message, key);
         }else {
             cout << "That was not an option.\n";
         }
@@ -104,24 +105,53 @@ void SubD(){
     f << message;
 }
 
-void XORE(const string& m, const string& k){
+string XORE(const string& m, const string& k){
     string result = "";
     string b_m = to_binary(m);
     string b_k = to_binary(k);
 
     for(int x = 0; x < b_m.length(); x++) {
         if (b_m[x] != b_k[x]) {
-            result[x] = '1';
+            result += '1';
         } else {
-            result[x] = '0';
+            result += '0';
         }
     }
+
+    cout << result << endl;
+    return result;
+}
+
+string XORD(const string& m, const string& k){
+    string result = "";
+    string b_k = to_binary(k);
+
+    for(int x = 0; x < m.length(); x++) {
+        if (m[x] != b_k[x]) {
+            result += '1';
+        } else {
+            result += '0';
+        }
+    }
+
+    string output;
+    stringstream sstream(result);
+
+    while (sstream.good()){
+        bitset<8> b;
+        sstream >> b;
+        char c = char(b.to_ulong());
+        output+=c;
+    }
+    output = output.substr(0,output.length()-1);
+    cout << output << endl;
+    return output;
 }
 
 string to_binary(const string& s){
     string tmp = "";
     for(int i = 0; i < s.size(); i++){
-        bitset<4> b (s.c_str()[i]);
+        bitset<8> b (s.c_str()[i]);
         tmp += b.to_string();
     }
     return tmp;
